@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {useAuth0} from 'react-native-auth0';
 
 const MyComponent = () => {
@@ -7,9 +7,9 @@ const MyComponent = () => {
 
   const onPressLogIn = async () => {
     try {
-      await authorize({}, {});
+      await authorize();
       const credentials = await getCredentials();
-      console.log('AccessToken: ', credentials);
+      console.log('AccessToken: ', credentials.accessToken);
     } catch (e) {
       console.log(e);
     }
@@ -17,7 +17,7 @@ const MyComponent = () => {
 
   const onPressLogOut = async () => {
     try {
-      await clearSession({}, {});
+      await clearSession();
     } catch (e) {
       console.log(e);
     }
@@ -29,10 +29,16 @@ const MyComponent = () => {
       <Text>App</Text>
       <Button title="LOG IN" onPress={onPressLogIn} />
       <Button title="LOG OUT" onPress={onPressLogOut} />
-      {user && <Text>Logged in as {user.name}</Text>}
-      {!user && <Text>Not logged in</Text>}
+      {user && <Text style={styles.text}>Logged in as {user.name}</Text>}
+      {!user && <Text style={styles.text}>Not logged in</Text>}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 20,
+  },
+});
 
 export default MyComponent;
